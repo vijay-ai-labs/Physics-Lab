@@ -1,0 +1,6 @@
+/* FILE: experiments/advanced/fluid-dynamics/style.css */
+/* Minimal local overrides; relies on index.css for main layout */
+
+.sim-canvas-wrapper {
+    background: #0f172a; /* Darker background to see particles clearly */
+}

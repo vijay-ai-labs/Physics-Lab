@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Push vs Pull — Physics Lab</title>
+    <link rel="stylesheet" href="../../index.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="../../index.html" class="back-link">◂ Back to Lab</a>
+            <span class="navbar-brand"><span class="logo-icon">⚛</span> Physics Lab</span>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="experiment-layout">
+            <div class="experiment-header">
+                <h1>↔️ Push vs Pull</h1>
+            </div>
+            <div class="controls-panel glass-panel">
+                <div class="section-title">Controls</div>
+                <div id="controls-body"></div>
+            </div>
+            <div class="sim-canvas-wrapper glass-panel"><canvas id="sim-canvas"></canvas></div>
+            <div class="graph-section glass-panel">
+                <div class="section-title">Live Graph</div>
+                <div style="position:relative; height:260px;"><canvas id="graph-canvas"></canvas></div>
+            </div>
+            <div class="theory-section glass-panel">
+                <div class="section-title">Theory</div>
+                <div id="theory-content"></div>
+            </div>
+        </div>
+    </div>
+    <script type="module">
+        import { initExperimentPage } from '../../js/ui.js';
+        import sim from './sim.js';
+        initExperimentPage({ sim });
+    </script>
+</body>
+
+</html>

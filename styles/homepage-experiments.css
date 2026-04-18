@@ -1,0 +1,684 @@
+/* ============================================================
+   FILE: styles/homepage-experiments.css
+   Styles for the 5 homepage replacement sections (ux- prefix).
+   Depends on CSS variables defined in index.css.
+   ============================================================ */
+
+/* ── Token aliases ── */
+:root {
+  --ux-accent:    var(--accent-primary-start);  /* #7c5cff */
+  --ux-muted:     var(--text-muted);             /* #64748b */
+  --ux-card-bg:   var(--bg-700);                 /* #131929 */
+  --ux-radius:    var(--radius-lg);              /* 16px */
+  --ux-gap:       var(--space-6);                /* 24px */
+}
+
+/* ── Hide the legacy experiments grid (conservative rule) ── */
+.ux-hidden {
+  display: none !important;
+}
+
+/* ── Shared section heading ── */
+.ux-section-heading {
+  font-family: var(--font-headline, 'Poppins', sans-serif);
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-3);
+  line-height: 1.2;
+}
+
+.ux-section-intro {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-8);
+  line-height: 1.7;
+  max-width: 560px;
+}
+
+/* ── Entrance animations ── */
+@keyframes ux-rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.ux-reveal {
+  animation: ux-rise 0.6s var(--ease-out, cubic-bezier(0,0,.2,1)) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ux-reveal { animation: none !important; }
+}
+
+/* ── CTA button on hero ── */
+.ux-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-6);
+  padding: 14px 36px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-headline, 'Poppins', sans-serif);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  background: var(--primary-gradient);
+  color: #fff;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(124,92,255,.35);
+  transition: transform .25s var(--ease-spring, cubic-bezier(.34,1.56,.64,1)),
+              box-shadow .25s var(--ease, cubic-bezier(.4,0,.2,1));
+}
+.ux-cta-btn:hover,
+.ux-cta-btn:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 32px rgba(124,92,255,.5);
+}
+.ux-cta-btn:focus-visible {
+  outline: 2px solid var(--accent-primary-end, #5ddcff);
+  outline-offset: 4px;
+}
+
+/* ════════════════════════════════════════════
+   BROWSE BY LEVEL — Rich Level Cards
+   (mirrors .experiment-card style from index.css)
+   ════════════════════════════════════════════ */
+
+/* Grid container — overrides default flex-pill layout */
+.category-nav.ux-level-nav {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+  justify-content: unset;
+  flex-wrap: unset;
+}
+
+/* ── Card base: mirrors .experiment-card exactly ── */
+.ux-level-card {
+  background: var(--bg-card, #131929);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  cursor: pointer;
+  transition: transform var(--dur-slow, .4s) var(--ease-spring, cubic-bezier(.34,1.56,.64,1)),
+              box-shadow var(--dur-slow, .4s) var(--ease, cubic-bezier(.4,0,.2,1)),
+              background var(--dur-slow, .4s) var(--ease, cubic-bezier(.4,0,.2,1));
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  color: var(--text-primary);
+  display: block;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  /* dark-mode lift — same rule as .experiment-card */
+  box-shadow: 0 4px 24px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.05);
+}
+
+/* Gradient border on hover — identical technique to .experiment-card::before */
+.ux-level-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--_lvl-gr, var(--primary-gradient));
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  opacity: 0;
+  transition: opacity var(--dur-slow, .4s) var(--ease, cubic-bezier(.4,0,.2,1));
+}
+
+/* Top shimmer — identical to .experiment-card::after */
+.ux-level-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.12), transparent);
+  opacity: 0;
+  transition: opacity var(--dur-slow, .4s) var(--ease, cubic-bezier(.4,0,.2,1));
+}
+
+/* Per-level gradient for the border */
+.ux-level-card--basic        { --_lvl-gr: linear-gradient(135deg, #10b981, #5ddcff); }
+.ux-level-card--intermediate { --_lvl-gr: linear-gradient(135deg, #f59e0b, #ff7ab6); }
+.ux-level-card--advanced     { --_lvl-gr: linear-gradient(135deg, #ff7ab6, #7c5cff); }
+
+/* Hover state — mirrors .experiment-card:hover */
+.ux-level-card:hover,
+.ux-level-card:focus-visible {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: var(--shadow-card-hover);
+  background: var(--bg-card-hover, #1a2240);
+}
+
+.ux-level-card:hover::before,
+.ux-level-card:focus-visible::before,
+.ux-level-card:hover::after,
+.ux-level-card:focus-visible::after { opacity: 1; }
+
+.ux-level-card:focus-visible {
+  outline: 2px solid var(--accent-primary-end, #5ddcff);
+  outline-offset: 4px;
+}
+
+/* ── Icon: mirrors .card-icon sizing & style ── */
+.ux-level-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius, 12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-5);
+  position: relative;
+  transition: transform var(--dur, .25s) var(--ease, cubic-bezier(.4,0,.2,1));
+}
+
+.ux-level-card:hover .ux-level-icon {
+  transform: scale(1.08) rotate(-3deg);
+}
+
+/* Icon glow layer (mirrors .card-icon::after) */
+.ux-level-icon::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: inherit;
+  opacity: .2;
+  filter: blur(14px);
+  transition: opacity var(--dur-slow, .4s) var(--ease);
+}
+
+.ux-level-card:hover .ux-level-icon::after { opacity: .4; }
+
+/* Per-level icon colors — mirrors .card-icon.physics / .waves / .optics */
+.ux-level-icon--basic {
+  background: rgba(16, 185, 129, .15);
+  color: #34d399;
+}
+.ux-level-icon--basic::after        { background: #10b981; }
+
+.ux-level-icon--intermediate {
+  background: rgba(245, 158, 11, .15);
+  color: #fbbf24;
+}
+.ux-level-icon--intermediate::after { background: #f59e0b; }
+
+.ux-level-icon--advanced {
+  background: rgba(255, 122, 182, .15);
+  color: #f472b6;
+}
+.ux-level-icon--advanced::after     { background: #ff7ab6; }
+
+/* ── Title — mirrors .card-title ── */
+.ux-level-title {
+  font-family: var(--font-headline, 'Poppins', sans-serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-2);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+/* ── Description — mirrors .card-description ── */
+.ux-level-desc {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0 0 var(--space-5);
+  flex: 1;
+}
+
+/* ── Footer: badge + experiment count ── */
+.ux-level-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.ux-level-count {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: .04em;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .category-nav.ux-level-nav {
+    grid-template-columns: 1fr 1fr;
+  }
+  .ux-level-card--advanced {
+    grid-column: 1 / -1;
+    max-width: 440px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+@media (max-width: 560px) {
+  .category-nav.ux-level-nav {
+    grid-template-columns: 1fr;
+  }
+  .ux-level-card--advanced {
+    grid-column: unset;
+    max-width: unset;
+  }
+}
+
+/* ════════════════════════════════════════════
+   SECTION 1 — How It Works
+   ════════════════════════════════════════════ */
+.ux-how-it-works {
+  padding-bottom: var(--space-16);
+}
+
+.ux-how-it-works .container {
+  text-align: center;
+}
+
+.ux-steps-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--ux-gap);
+  margin-top: var(--space-8);
+  text-align: left;
+}
+
+.ux-step-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--ux-radius);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  padding: var(--space-8) var(--space-6);
+  position: relative;
+  transition: transform .3s var(--ease-spring, cubic-bezier(.34,1.56,.64,1)),
+              box-shadow .3s var(--ease),
+              border-color .3s var(--ease);
+}
+.ux-step-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: rgba(124,92,255,.28);
+}
+.ux-step-card:focus-within {
+  outline: 2px solid var(--accent-primary-end, #5ddcff);
+  outline-offset: 4px;
+}
+
+.ux-step-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--primary-gradient);
+  font-family: var(--font-headline, 'Poppins', sans-serif);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: var(--space-4);
+  flex-shrink: 0;
+  box-shadow: 0 4px 16px rgba(124,92,255,.4);
+}
+
+.ux-step-title {
+  font-family: var(--font-headline, 'Poppins', sans-serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-2);
+}
+
+.ux-step-desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ════════════════════════════════════════════
+   SECTION 2 — Why Our Virtual Lab
+   ════════════════════════════════════════════ */
+.ux-why-lab {
+  padding-bottom: var(--space-16);
+}
+
+.ux-why-lab .container {
+  text-align: center;
+}
+
+.ux-features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--ux-gap);
+  margin-top: var(--space-8);
+  text-align: left;
+}
+
+.ux-feature-tile {
+  background: var(--ux-card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--ux-radius);
+  padding: var(--space-8) var(--space-6);
+  position: relative;
+  overflow: hidden;
+  transition: transform .3s var(--ease-spring, cubic-bezier(.34,1.56,.64,1)),
+              box-shadow .3s var(--ease),
+              background .3s var(--ease);
+}
+.ux-feature-tile::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--primary-gradient);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: destination-out;
+  opacity: 0;
+  transition: opacity .3s var(--ease);
+}
+.ux-feature-tile:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-card-hover);
+  background: var(--bg-600);
+}
+.ux-feature-tile:hover::before {
+  opacity: 1;
+}
+.ux-feature-tile:focus-within {
+  outline: 2px solid var(--accent-primary-end, #5ddcff);
+  outline-offset: 4px;
+}
+
+.ux-feature-stat {
+  font-family: var(--font-headline, 'Poppins', sans-serif);
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 800;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.1;
+  margin: 0 0 var(--space-2);
+}
+
+.ux-feature-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ════════════════════════════════════════════
+   SECTION 3 — Platform Capabilities
+   ════════════════════════════════════════════ */
+.ux-platform {
+  padding-bottom: var(--space-16);
+}
+
+.ux-platform .container {
+  text-align: center;
+}
+
+.ux-cap-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--ux-gap);
+  margin-top: var(--space-8);
+  text-align: left;
+}
+
+.ux-cap-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--ux-radius);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  transition: transform .3s var(--ease-spring, cubic-bezier(.34,1.56,.64,1)),
+              box-shadow .3s var(--ease),
+              border-color .3s var(--ease);
+}
+.ux-cap-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: rgba(93,220,255,.22);
+}
+.ux-cap-card:focus-within {
+  outline: 2px solid var(--accent-primary-end, #5ddcff);
+  outline-offset: 4px;
+}
+
+.ux-cap-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  background: rgba(124,92,255,.12);
+  border: 1px solid rgba(124,92,255,.2);
+  color: var(--accent-primary-start, #7c5cff);
+  flex-shrink: 0;
+}
+
+.ux-cap-title {
+  font-family: var(--font-headline, 'Poppins', sans-serif);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.ux-cap-desc {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ════════════════════════════════════════════
+   SECTION 4 — Designed for Better Learning
+   ════════════════════════════════════════════ */
+.ux-learning {
+  padding-bottom: var(--space-16);
+}
+
+.ux-learning-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-12);
+  align-items: center;
+  margin-top: var(--space-8);
+}
+
+.ux-benefit-list {
+  list-style: none;
+  margin: var(--space-6) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.ux-benefit-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: 0.975rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.ux-check-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: var(--success, #10b981);
+  margin-top: 2px;
+}
+
+.ux-learning-visual {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  padding: var(--space-10);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.ux-learn-stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.ux-learn-stat-label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.ux-learn-bar-wrap {
+  height: 8px;
+  background: rgba(255,255,255,.06);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.ux-learn-bar {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: var(--primary-gradient);
+  transition: width 1s var(--ease-out);
+}
+
+/* ════════════════════════════════════════════
+   SECTION 5 — What Educators Say
+   ════════════════════════════════════════════ */
+.ux-testimonial {
+  padding-bottom: var(--space-20);
+}
+
+.ux-testimonial .container {
+  text-align: center;
+}
+
+.ux-testimonial-card {
+  position: relative;
+  max-width: 720px;
+  margin: var(--space-8) auto 0;
+  background: var(--ux-card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-10) var(--space-12);
+  text-align: left;
+  overflow: hidden;
+}
+.ux-testimonial-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--secondary-gradient);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: destination-out;
+  opacity: .6;
+}
+
+.ux-quote-mark {
+  font-family: Georgia, serif;
+  font-size: 6rem;
+  line-height: 0.6;
+  background: var(--secondary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: block;
+  margin-bottom: var(--space-4);
+  user-select: none;
+}
+
+.ux-testimonial-quote {
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--text-primary);
+  line-height: 1.75;
+  margin: 0 0 var(--space-6);
+}
+
+.ux-testimonial-attribution {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  margin: 0;
+}
+
+/* ════════════════════════════════════════════
+   Responsive Breakpoints
+   ════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .ux-features-grid,
+  .ux-cap-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .ux-steps-row {
+    grid-template-columns: 1fr;
+  }
+
+  .ux-features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ux-cap-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ux-learning-inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  .ux-testimonial-card {
+    padding: var(--space-8) var(--space-6);
+  }
+}
+
+@media (max-width: 480px) {
+  .ux-features-grid,
+  .ux-cap-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ux-quote-mark {
+    font-size: 4rem;
+  }
+}

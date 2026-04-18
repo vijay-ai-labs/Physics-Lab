@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" fill="#0f172a"/>
+  <!-- Flow lines -->
+  <path d="M 0 30 Q 30 30 50 15 T 100 30" stroke="#38bdf8" stroke-width="4" fill="none"/>
+  <path d="M 0 50 C 30 50 40 40 50 50 S 70 60 100 50" stroke="#38bdf8" stroke-width="4" fill="none"/>
+  <path d="M 0 70 Q 30 70 50 85 T 100 70" stroke="#38bdf8" stroke-width="4" fill="none"/>
+  <!-- Cylinder -->
+  <circle cx="30" cy="50" r="10" fill="#475569"/>
+  <!-- Vortices back -->
+  <circle cx="60" cy="40" r="5" stroke="#ef4444" stroke-width="2" fill="none"/>
+  <circle cx="75" cy="65" r="7" stroke="#38bdf8" stroke-width="2" fill="none"/>
+</svg>

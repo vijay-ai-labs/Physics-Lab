@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atomic Spectra — Physics Lab</title>
+    <link rel="stylesheet" href="../../../index.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="../../../pages/advanced.html" class="back-link">◂ Back to Advanced</a>
+            <span class="navbar-brand"><span class="logo-icon">⚛</span> Physics Lab</span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="experiment-layout">
+            <div class="experiment-header">
+                <h1>🌈 Atomic Spectra</h1>
+                <p>Simulate energy level transitions, emission spectra, and thermal broadening.</p>
+            </div>
+
+            <div class="controls-panel glass-panel">
+                <div class="section-title">Controls</div>
+                <div id="controls-body"></div>
+            </div>
+
+            <div class="sim-canvas-wrapper glass-panel">
+                <canvas id="sim-canvas"></canvas>
+            </div>
+
+            <div class="graph-section glass-panel">
+                <div class="section-title">Spectrum Intensity vs Wavelength</div>
+                <div style="position:relative; height:260px;">
+                    <canvas id="graph-canvas"></canvas>
+                </div>
+            </div>
+
+            <div class="theory-section glass-panel">
+                <div class="section-title">Theory</div>
+                <div id="theory-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initExperimentPage } from '../../../js/ui.js';
+        import sim from './sim.js?v=2';
+        initExperimentPage({ sim });
+    </script>
+</body>
+
+</html>

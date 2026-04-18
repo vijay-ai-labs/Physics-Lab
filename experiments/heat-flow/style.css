@@ -1,0 +1,18 @@
+/* FILE: experiments/heat-flow/style.css */
+/* Heat Flow Rate (Conduction) — experiment-specific overrides */
+
+.sim-canvas-wrapper {
+  animation: canvasReveal 0.6s cubic-bezier(0, 0, 0.2, 1) 0.15s both;
+}
+
+.controls-panel .control-group {
+  opacity: 0;
+  animation: fadeUp 0.4s cubic-bezier(0, 0, 0.2, 1) both;
+}
+.controls-panel .control-group:nth-child(1) { animation-delay: 0.10s; }
+.controls-panel .control-group:nth-child(2) { animation-delay: 0.16s; }
+.controls-panel .control-group:nth-child(3) { animation-delay: 0.22s; }
+.controls-panel .control-group:nth-child(4) { animation-delay: 0.28s; }
+.controls-panel .control-group:nth-child(5) { animation-delay: 0.34s; }
+.controls-panel .control-group:nth-child(6) { animation-delay: 0.40s; }
+.controls-panel .control-group:nth-child(7) { animation-delay: 0.46s; }
