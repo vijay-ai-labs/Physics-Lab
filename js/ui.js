@@ -346,8 +346,9 @@ export async function initExperimentPage({
         accordionToggle.innerHTML = '<span>⚙️ Simulation Controls</span><span class="chevron">▼</span>';
         accordionToggle.setAttribute('aria-expanded', 'false');
         accordionToggle.addEventListener('click', () => {
-            controlsBody.classList.toggle('expanded');
-            accordionToggle.setAttribute('aria-expanded', controlsBody.classList.contains('expanded'));
+            const panel = controlsBody.closest('.controls-panel') || controlsBody;
+            panel.classList.toggle('expanded');
+            accordionToggle.setAttribute('aria-expanded', panel.classList.contains('expanded'));
         });
         controlsBody.appendChild(accordionToggle);
 
